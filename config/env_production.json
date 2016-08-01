@@ -1,0 +1,6 @@
+{
+  "name": "production",
+  "description": "Add here any environment specific stuff you like.",
+  "version_url": "http://172.22.3.199/simba_version",
+  "simba_download_url": "http://172.22.3.199/simba_latest"
+}

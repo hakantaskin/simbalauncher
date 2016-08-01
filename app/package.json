@@ -1,0 +1,14 @@
+{
+  "name": "simbalauncher",
+  "productName": "Simba Launcher",
+  "description": "Starter for your Electron application",
+  "version": "0.1.0",
+  "author": "Metglobal",
+  "copyright": "© 2016, Metglobal",
+  "homepage": "",
+  "license": "MIT",
+  "main": "background.js",
+  "dependencies": {
+    "fs-jetpack": "^0.9.0"
+  }
+}
