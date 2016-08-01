@@ -87,19 +87,24 @@ function download(option) {
 
 setInterval(function(){
   if(os.platform() != 'darwin'){
-    exec('tasklist /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
+    exec('tasklist /fo:csv /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
       if (err) {
         console.error(err);
         return;
       }
-      console.log(stdout);
-      if(stdout == null || stdout == '' || stdout == undefined){
-        console.log("program calismiyor");
-        exec('simba/Simba.exe', function(err, data) {
-          console.log(err)
-          console.log(data.toString());
-       });
-      }
+      var processid = "";
+      var result = stdout.match(/"Simba.exe","(.*?)","Console"/g).map(function(val){
+        if(val.length > 0){
+          processid =  val;
+          console.log("processid : " + processid);
+        } else {
+          console.log("program calismiyor");
+          exec('simba/Simba.exe', function(err, data) {
+            console.log(err)
+            console.log(data.toString());
+         });
+        }
+      });
     });
   }
 
