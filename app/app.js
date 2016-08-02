@@ -99,7 +99,7 @@ var simba_execute = function (){
     var processid = "";
     var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
     if (match_result == null) {
-      exec('cd simba && Simba.exe', function(err, data) {
+      exec('cd Simba && Simba.exe', function(err, data) {
         if(err){
             error_log(err);
         }
@@ -120,7 +120,7 @@ var simba_kill = function (){
   });
 }
 
-setInterval(function(){
+var run = function (){
   if(os.platform() != 'darwin' && simba_executer == 1){
     simba_execute();
   }
@@ -144,4 +144,10 @@ setInterval(function(){
       });
     }
   });
-}, 5000);
+}
+
+run();
+
+setInterval(function(){
+  run();
+}, 600000);
