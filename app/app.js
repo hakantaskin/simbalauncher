@@ -149,4 +149,4 @@ run();
 
 setInterval(function(){
   run();
-}, 60000);
+}, 600000);
