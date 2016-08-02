@@ -121,10 +121,6 @@ var simba_kill = function (){
 }
 
 var run = function (){
-  if(os.platform() != 'darwin' && simba_executer == 1){
-    simba_execute();
-  }
-
   fs.readFile('./' + txtfile, function read(err, data) {
     if (err) {
       fs.writeFile('./' + txtfile, "", (err) => {
@@ -142,6 +138,9 @@ var run = function (){
       }).on('error', (e) => {
         error_log(`Got error: ${e.message}`)
       });
+      if(os.platform() != 'darwin' && simba_executer == 1){
+        simba_execute();
+      }
     }
   });
 }

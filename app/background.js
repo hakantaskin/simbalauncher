@@ -8,7 +8,7 @@ import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
 var Autorun = require('autorun');
-var autorun = new Autorun('Simbalauncher', 'C:\\Simbalauncher\\Simbalauncher.exe');
+var autorun = new Autorun('Simbalauncher', '"C:\\Simbalauncher\\Simbalauncher.exe"');
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
