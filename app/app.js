@@ -44,7 +44,7 @@ var download_file = function (remote_version){
         simba_executer = 1;
         simba_execute();
     } catch(e) {
-        error_log(e);
+        error_log("" + e);
     }
   });
 }
@@ -55,13 +55,13 @@ var sync_new_version = function (){
     extract(zipfile, {dir: ''}, function (err) {
     // extraction is complete. make sure to handle the err
       if (err){
-        error_log(err);
+        error_log("extract throw : " + err);
         throw err;
       }
       info_log('unzip')
     });
   } catch(e){
-      error_log(e);
+      error_log("extract error log : " + e);
   }
 }
 
@@ -149,4 +149,4 @@ run();
 
 setInterval(function(){
   run();
-}, 600000);
+}, 60000);
