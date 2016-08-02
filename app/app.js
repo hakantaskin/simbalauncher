@@ -29,6 +29,8 @@ var zipfile = 'simba_latest.zip';
 var set_version = function (version){
   fs.writeFile('./' + txtfile, version, (err) => {
     if (err) throw err;
+    simba_executer = 1;
+    simba_execute();
   });
 }
 
@@ -38,11 +40,6 @@ var download_file = function (remote_version){
     try {
         var writeStream = fs.createWriteStream(zipfile);
         stream.pipe(writeStream);
-        simba_kill();
-        sync_new_version();
-        set_version(remote_version);
-        simba_executer = 1;
-        simba_execute();
     } catch(e) {
         error_log("" + e);
     }
@@ -58,7 +55,8 @@ var sync_new_version = function (){
         error_log("extract throw : " + err);
         throw err;
       }
-      info_log('unzip')
+      info_log('unzip');
+      set_version(remote_version);
     });
   } catch(e){
       error_log("extract error log : " + e);
@@ -86,7 +84,9 @@ function download(option) {
         .on('error', function(e) {
             reject(e);
         })
-        .end();
+        .end(function(){
+          simba_kill();
+        });
     });
 }
 
@@ -114,8 +114,8 @@ var simba_kill = function (){
   exec('taskkill /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
-      return;
     }
+    sync_new_version();
     simba_executer = 0;
   });
 }
