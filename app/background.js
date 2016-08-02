@@ -28,11 +28,13 @@ app.on('ready', function () {
     var mainWindow = createWindow('main', {
         width: 1000,
         height: 600,
-        show: true
+        show: false
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');
-
+    mainWindow.on('close', function (main_event){
+      main_event.preventDefault();
+    });
     if (env.name !== 'production') {
         mainWindow.openDevTools();
     }
