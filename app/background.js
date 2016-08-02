@@ -7,6 +7,8 @@ import { app, Menu } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
+var Autorun = require('autorun');
+var autorun = new Autorun('AppName', 'C://Simbalauncher/Simbalauncher.exe');
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -22,7 +24,29 @@ var setApplicationMenu = function () {
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
+var auto_run = function (){
+  // Check if platform is supported
+  if (autorun.isPlatformSupported()) {
+    // Check if autorun is enabled using callback
+    autorun.isSet(function(err, enabled) {
+      if (err) console.log(err);
+      console.log('Autorun is ' + ((enabled) ? 'enabled' : 'disabled'));
+      // Toogle autorun using promises
+      if (!enabled) {
+        autorun.enable()
+        .then(function() {
+          console.log('Autorun enabled');
+        })
+        .catch(function(err) {
+          console.log('Error enabling autorun', err);
+        });
+      }
+    });
+  }
+}
+
 app.on('ready', function () {
+    auto_run();
     setApplicationMenu();
 
     var mainWindow = createWindow('main', {
