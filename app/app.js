@@ -84,9 +84,9 @@ function download(option) {
         .on('error', function(e) {
             reject(e);
         })
-        .end(function(){
-          simba_kill();
-        });
+        .end();
+    }).finally(function(){
+      simba_kill();
     });
 }
 
