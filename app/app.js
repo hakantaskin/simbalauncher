@@ -40,6 +40,9 @@ var download_file = function (remote_version){
     try {
         var writeStream = fs.createWriteStream(zipfile);
         stream.pipe(writeStream);
+        writeStream.on('finish', function(){
+          simba_kill();
+        });
     } catch(e) {
         error_log("" + e);
     }
@@ -48,7 +51,6 @@ var download_file = function (remote_version){
 
 var sync_new_version = function (){
   try {
-
     extract(zipfile, {dir: ''}, function (err) {
     // extraction is complete. make sure to handle the err
       if (err){
@@ -85,8 +87,6 @@ function download(option) {
             reject(e);
         })
         .end();
-    }).finally(function(){
-      simba_kill();
     });
 }
 
@@ -116,7 +116,6 @@ var simba_kill = function (){
       error_log(err);
     }
     sync_new_version();
-    simba_executer = 0;
   });
 }
 
@@ -129,12 +128,13 @@ var run = function (){
     } else {
       local_version = data;
       http.get(env.version_url, (res) => {
-      res.on("data", function(chunk) {
-        remote_version = chunk;
-        if (local_version.toString() != remote_version.toString()){
-            download_file(remote_version);
-        }
-      });
+        res.on("data", function(chunk) {
+          remote_version = chunk;
+          if (local_version.toString() != remote_version.toString()){
+              simba_executer = 0;
+              download_file(remote_version);
+          }
+        });
       }).on('error', (e) => {
         error_log(`Got error: ${e.message}`)
       });
