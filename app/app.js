@@ -29,6 +29,7 @@ var zipfile = 'simba_latest.zip';
 var set_version = function (version){
   fs.writeFile('./' + txtfile, version, (err) => {
     if (err) throw err;
+    info_log("new version : " + version);
     simba_executer = 1;
     simba_execute();
   });
@@ -41,6 +42,7 @@ var download_file = function (remote_version){
         var writeStream = fs.createWriteStream(zipfile);
         stream.pipe(writeStream);
         writeStream.on('finish', function(){
+          info_log("Zip download finished");
           simba_kill();
         });
     } catch(e) {
@@ -98,9 +100,10 @@ var simba_execute = function (){
         if(err){
             error_log(err);
         }
+        info_log("Simba.exe execute.");
      });
    } else {
-     console.log("Simba.exe is running.");
+     info_log("Simba.exe is running.");
    }
   });
 }
@@ -111,6 +114,7 @@ var simba_kill = function (){
       error_log(err);
     }
     sync_new_version();
+    info_log("Simba.exe kill");
   });
 }
 
@@ -128,14 +132,15 @@ var run = function (){
           if (local_version.toString() != remote_version.toString()){
               simba_executer = 0;
               download_file(remote_version);
+          } else {
+            if(os.platform() != 'darwin' && simba_executer == 1){
+              simba_execute();
+            }
           }
         });
       }).on('error', (e) => {
         error_log(`Got error: ${e.message}`)
       });
-      if(os.platform() != 'darwin' && simba_executer == 1){
-        simba_execute();
-      }
     }
   });
 }
@@ -144,4 +149,4 @@ run();
 
 setInterval(function(){
   run();
-}, 600000);
+}, 300000);
