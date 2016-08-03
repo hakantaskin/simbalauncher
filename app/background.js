@@ -7,6 +7,7 @@ import { app, Menu } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
+import { error_log, info_log } from './helpers/quick';
 var Autorun = require('autorun');
 var autorun = new Autorun('Simbalauncher', '"C:\\Simbalauncher\\Simbalauncher.exe"');
 
@@ -30,15 +31,15 @@ var auto_run = function (){
     // Check if autorun is enabled using callback
     autorun.isSet(function(err, enabled) {
       if (err) console.log(err);
-      console.log('Autorun is ' + ((enabled) ? 'enabled' : 'disabled'));
+      info_log('Autorun is ' + ((enabled) ? 'enabled' : 'disabled'));
       // Toogle autorun using promises
       if (!enabled) {
         autorun.enable()
         .then(function() {
-          console.log('Autorun enabled');
+          info_log('Autorun enabled');
         })
         .catch(function(err) {
-          console.log('Error enabling autorun', err);
+          info_log('Error enabling autorun', err);
         });
       }
     });
