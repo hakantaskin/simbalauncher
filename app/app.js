@@ -50,19 +50,14 @@ var download_file = function (remote_version){
 }
 
 var sync_new_version = function (){
-  try {
-    extract(zipfile, {dir: ''}, function (err) {
-    // extraction is complete. make sure to handle the err
-      if (err){
-        error_log("extract throw : " + err);
-        throw err;
-      }
-      info_log('unzip');
-      set_version(remote_version);
-    });
-  } catch(e){
-      error_log("extract error log : " + e);
-  }
+  exec('unzip.exe -e simba_latest.zip', (err, stdout, stderr) => {
+    if (err) {
+      error_log(err);
+      return;
+    }
+    info_log('unzip');
+    set_version(remote_version);
+  });
 }
 
 function download(option) {
