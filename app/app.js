@@ -25,9 +25,10 @@ var local_version = "";
 var remote_version = "";
 var txtfile = 'last_version.txt';
 var zipfile = 'simba_latest.zip';
+var simbalancher_path = 'C:\\Simbalauncher\\';
 
 var set_version = function (version){
-  fs.writeFile('./' + txtfile, version, (err) => {
+  fs.writeFile( simbalancher_path + txtfile, version, (err) => {
     if (err) throw err;
     info_log("new version : " + version);
     simba_executer = 1;
@@ -52,7 +53,7 @@ var download_file = function (remote_version){
 }
 
 var sync_new_version = function (){
-  exec('unzip.exe -e simba_latest.zip', (err, stdout, stderr) => {
+  exec( simbalancher_path + 'unzip.exe -e simba_latest.zip', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
       return;
@@ -97,11 +98,11 @@ var simba_execute = function (){
     var processid = "";
     var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
     if (match_result == null) {
-      fs.stat('C:\\Simbalauncher\\Simba', (err, stats) => {
+      fs.stat(simbalancher_path + 'Simba', (err, stats) => {
         if (err){
           info_log("Simba directory not found!");
         } else {
-            exec('cd C:\\Simbalauncher\\Simba && Simba.exe', function(err, data) {
+            exec('cd ' + simbalancher_path + 'Simba && Simba.exe', function(err, data) {
               if(err){
                   error_log(err);
               }
@@ -131,9 +132,9 @@ var run = function (){
   if(os.platform() != 'darwin' && simba_executer == 1){
     simba_execute();
   }
-  fs.readFile('./' + txtfile, function read(err, data) {
+  fs.readFile(simbalancher_path + txtfile, function read(err, data) {
     if (err) {
-      fs.writeFile('./' + txtfile, "", (err) => {
+      fs.writeFile(simbalancher_path + txtfile, "", (err) => {
         info_log(err);
       });
     } else {
