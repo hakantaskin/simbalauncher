@@ -96,9 +96,6 @@ var simba_execute = function (){
     var processid = "";
     var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
     if (match_result == null) {
-      if(fs.existsSync('./Simba')){
-
-      }
       fs.stat('Simba', (err, stats) => {
         if (err){
           info_log("Simba directory not found!");
@@ -135,7 +132,7 @@ var run = function (){
   fs.readFile('./' + txtfile, function read(err, data) {
     if (err) {
       fs.writeFile('./' + txtfile, "", (err) => {
-        if (err) throw err;
+        info_log(err);
       });
     } else {
       local_version = data;
@@ -148,7 +145,7 @@ var run = function (){
           }
         });
       }).on('error', (e) => {
-        error_log('Got error: ' + e.message);
+        info_log('Got error: ' + e);
       });
     }
   });
