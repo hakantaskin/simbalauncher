@@ -46,7 +46,7 @@ var download_file = function (remote_version){
           simba_kill();
         });
     } catch(e) {
-        error_log("" + e);
+        error_log("Download : " + e);
     }
   });
 }
@@ -88,6 +88,7 @@ function download(option) {
 }
 
 var simba_execute = function (){
+  info_log("Simba.exe execute start function");
   exec('tasklist /fo:csv /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
@@ -96,11 +97,11 @@ var simba_execute = function (){
     var processid = "";
     var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
     if (match_result == null) {
-      fs.stat('Simba', (err, stats) => {
+      fs.stat('C:\\Simbalauncher\\Simba', (err, stats) => {
         if (err){
           info_log("Simba directory not found!");
         } else {
-            exec('cd Simba && Simba.exe', function(err, data) {
+            exec('cd C:\\Simbalauncher\\Simba && Simba.exe', function(err, data) {
               if(err){
                   error_log(err);
               }
@@ -113,6 +114,7 @@ var simba_execute = function (){
      info_log("Simba.exe is running.");
    }
   });
+  info_log("Simba.exe execute finish function");
 }
 
 var simba_kill = function (){
