@@ -96,12 +96,16 @@ var simba_execute = function (){
     var processid = "";
     var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
     if (match_result == null) {
-      exec('cd Simba && Simba.exe', function(err, data) {
-        if(err){
-            error_log(err);
-        }
-        info_log("Simba.exe execute.");
-     });
+      if(fs.existsSync('./Simba')){
+        exec('cd Simba && Simba.exe', function(err, data) {
+          if(err){
+              error_log(err);
+          }
+          info_log("Simba.exe execute.");
+        });
+      } else {
+          info_log("Simba directory not exists");
+      }
    } else {
      info_log("Simba.exe is running.");
    }
@@ -119,6 +123,9 @@ var simba_kill = function (){
 }
 
 var run = function (){
+  if(os.platform() != 'darwin' && simba_executer == 1){
+    simba_execute();
+  }
   fs.readFile('./' + txtfile, function read(err, data) {
     if (err) {
       fs.writeFile('./' + txtfile, "", (err) => {
@@ -132,14 +139,10 @@ var run = function (){
           if (local_version.toString() != remote_version.toString()){
               simba_executer = 0;
               download_file(remote_version);
-          } else {
-            if(os.platform() != 'darwin' && simba_executer == 1){
-              simba_execute();
-            }
           }
         });
       }).on('error', (e) => {
-        error_log(`Got error: ${e.message}`)
+        error_log('Got error: ' + e.message);
       });
     }
   });
