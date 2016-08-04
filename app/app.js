@@ -101,22 +101,18 @@ var simba_execute = function (){
       }
       fs.stat('Simba', (err, stats) => {
         if (err){
-          info_log("fs stat error");
+          info_log("Simba directory not found!");
         } else {
-          if(stats.isDirectory()){
             exec('cd Simba && Simba.exe', function(err, data) {
               if(err){
                   error_log(err);
               }
               info_log("Simba.exe execute.");
             });
-          } else {
-            info_log("Simba directory not found!");
           }
-        }
       });
-
-   } else {
+    }
+    else {
      info_log("Simba.exe is running.");
    }
   });
