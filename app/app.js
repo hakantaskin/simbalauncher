@@ -25,11 +25,13 @@ var local_version = "";
 var remote_version = "";
 var txtfile = 'last_version.txt';
 var zipfile = 'simba_latest.zip';
-var simba_lanucher_path = 'C:\\Simbalauncher\\';
+var simba_launcher_path = 'C:\\Simbalauncher\\';
 
 var set_version = function (version){
-  fs.writeFile( simba_lanucher_path + txtfile, version, (err) => {
-    if (err) throw err;
+  fs.writeFile( simba_launcher_path + txtfile, version, (err) => {
+    if (err){
+      error_log(err);
+    };
     info_log("new version : " + version);
     simba_executer = 1;
     simba_execute();
@@ -53,13 +55,13 @@ var download_file = function (remote_version){
 }
 
 var sync_new_version = function (){
-  exec( simba_lanucher_path + 'unzip.exe -e simba_latest.zip', (err, stdout, stderr) => {
+  exec('cd ' + simba_launcher_path + ' && unzip.exe -e simba_latest.zip', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
-      return;
+    } else {
+      info_log('unzip');
+      set_version(remote_version);
     }
-    info_log('unzip');
-    set_version(remote_version);
   });
 }
 
@@ -93,27 +95,27 @@ var simba_execute = function (){
   exec('tasklist /fo:csv /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
-      return;
+    } else {
+      var processid = "";
+      var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
+      if (match_result == null) {
+        fs.stat(simba_launcher_path + 'Simba', (err, stats) => {
+          if (err){
+            info_log("Simba directory not found!");
+          } else {
+              exec('cd ' + simba_launcher_path + 'Simba && Simba.exe', function(err, data) {
+                if(err){
+                    error_log(err);
+                }
+                info_log("Simba.exe execute.");
+              });
+            }
+        });
+      }
+      else {
+       info_log("Simba.exe is running.");
+     }
     }
-    var processid = "";
-    var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
-    if (match_result == null) {
-      fs.stat(simba_lanucher_path + 'Simba', (err, stats) => {
-        if (err){
-          info_log("Simba directory not found!");
-        } else {
-            exec('cd ' + simba_lanucher_path + 'Simba && Simba.exe', function(err, data) {
-              if(err){
-                  error_log(err);
-              }
-              info_log("Simba.exe execute.");
-            });
-          }
-      });
-    }
-    else {
-     info_log("Simba.exe is running.");
-   }
   });
   info_log("Simba.exe execute finish function");
 }
@@ -122,9 +124,10 @@ var simba_kill = function (){
   exec('taskkill /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
+    } else {
+      sync_new_version();
+      info_log("Simba.exe kill");
     }
-    sync_new_version();
-    info_log("Simba.exe kill");
   });
 }
 
@@ -132,9 +135,9 @@ var run = function (){
   if(os.platform() != 'darwin' && simba_executer == 1){
     simba_execute();
   }
-  fs.readFile(simba_lanucher_path + txtfile, function read(err, data) {
+  fs.readFile(simba_launcher_path + txtfile, function read(err, data) {
     if (err) {
-      fs.writeFile(simba_lanucher_path + txtfile, "", (err) => {
+      fs.writeFile(simba_launcher_path + txtfile, "", (err) => {
         info_log(err);
       });
     } else {
