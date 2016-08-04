@@ -55,7 +55,7 @@ var download_file = function (remote_version){
 }
 
 var sync_new_version = function (){
-  exec('cd ' + simba_launcher_path + ' && unzip.exe -e simba_latest.zip', (err, stdout, stderr) => {
+  exec('cd ' + simba_launcher_path + ' && unzip.exe -eo simba_latest.zip', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
     } else {
