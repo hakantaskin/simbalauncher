@@ -121,7 +121,7 @@ var simba_execute = function (){
 }
 
 var simba_kill = function (){
-  exec('taskkill /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
+  exec('taskkill /f /fi "imagename eq Simba.exe"', (err, stdout, stderr) => {
     if (err) {
       error_log(err);
     } else {
