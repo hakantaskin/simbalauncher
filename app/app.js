@@ -36,7 +36,7 @@ var set_version = function (version){
       setTimeout(function(){
         info_log("Simba executer activate");
         simba_executer = 1;
-      }, 30000);
+      }, 40000);
     }
   });
 }
@@ -119,13 +119,17 @@ var simba_execute = function (){
 }
 
 var simba_exe_run = function(command){
-  exec(command, (execute_err, stdout, stderr) => {
-    if(execute_err){
-        error_log(execute_err);
-    } else {
-        info_log("Simba.exe execute. Command: " + command);
-    }
-  });
+  if(simba_executer == 1){
+    exec(command, (execute_err, stdout, stderr) => {
+      if(execute_err){
+          error_log(execute_err);
+      } else {
+          info_log("Simba.exe execute. Command: " + command);
+      }
+    });
+  } else {
+      info_log("Simba_exe_run function = Error: Simba executer status = 0");
+  }
 }
 
 var simba_kill = function (){
