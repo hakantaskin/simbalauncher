@@ -31,10 +31,11 @@ var set_version = function (version){
   fs.writeFile( simba_launcher_path + txtfile, version, (err) => {
     if (err){
       error_log(err);
-    };
-    info_log("new version : " + version);
-    simba_executer = 1;
-    simba_execute();
+    } else {
+      info_log("new version : " + version);
+      simba_executer = 1;
+      simba_execute();
+    }
   });
 }
 
@@ -102,12 +103,15 @@ var simba_execute = function (){
         fs.stat(simba_launcher_path + 'Simba', (err, stats) => {
           if (err){
             info_log("Simba directory not found!");
-          } else {
+          } else{
               exec('cd ' + simba_launcher_path + 'Simba && Simba.exe', function(err, data) {
                 if(err){
                     error_log(err);
+                    info_log('code:'+'cd ' + simba_launcher_path + 'Simba && Simba.exe')
+                    info_log('Simba.exe Execute Error: ' + data);
+                } else {
+                    info_log("Simba.exe execute.");
                 }
-                info_log("Simba.exe execute.");
               });
             }
         });
