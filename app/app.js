@@ -34,7 +34,6 @@ var set_version = function (version){
     } else {
       info_log("new version : " + version);
       simba_executer = 1;
-      simba_execute();
     }
   });
 }
@@ -62,6 +61,7 @@ var sync_new_version = function (){
     } else {
       info_log('unzip');
       set_version(remote_version);
+      simba_execute();
     }
   });
 }
