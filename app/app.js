@@ -17,6 +17,9 @@ const child_process = require('child_process');
 const exec = child_process.exec;
 const execFile = child_process.execFile;
 const spawn = child_process.spawn;
+const EventEmitter = require('events');
+class MyEmitter extends EventEmitter {}
+const myEmitter = new MyEmitter();
 var simba_executer = 1;
 
 var app = remote.app;
@@ -34,7 +37,10 @@ var set_version = function (version){
     } else {
       info_log("new version : " + version);
       simba_executer = 1;
-      setTimeout(simba_execute(), 5000);
+      setTimeout(
+        function(){
+          simba_execute();
+        }, 5000);
     }
   });
 }
@@ -160,6 +166,10 @@ var run = function (){
     }
   });
 }
+
+myEmitter.on('error', (err) => {
+  error_log(err);
+});
 
 run();
 
