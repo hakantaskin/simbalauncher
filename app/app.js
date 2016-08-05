@@ -34,7 +34,7 @@ var set_version = function (version){
     } else {
       info_log("new version : " + version);
       simba_executer = 1;
-      simba_execute();
+      setTimeout(simba_execute(), 5000);
     }
   });
 }
