@@ -33,7 +33,10 @@ var set_version = function (version){
       error_log(err);
     } else {
       info_log("new version : " + version);
-      simba_executer = 1;
+      setTimeout(function(){
+        info_log("Simba executer activate");
+        simba_executer = 1;
+      }, 30000);
     }
   });
 }
@@ -61,7 +64,6 @@ var sync_new_version = function (){
     } else {
       info_log('unzip');
       set_version(remote_version);
-      simba_execute();
     }
   });
 }
@@ -117,16 +119,13 @@ var simba_execute = function (){
 }
 
 var simba_exe_run = function(command){
-  setTimeout(function(){
-    exec(command, (execute_err, stdout, stderr) => {
-      if(execute_err){
-          error_log(execute_err);
-          error_log(stderr);
-      } else {
-          info_log("Simba.exe execute. Command: " + command);
-      }
-    });
-  },5000);
+  exec(command, (execute_err, stdout, stderr) => {
+    if(execute_err){
+        error_log(execute_err);
+    } else {
+        info_log("Simba.exe execute. Command: " + command);
+    }
+  });
 }
 
 var simba_kill = function (){
