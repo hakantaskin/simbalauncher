@@ -106,13 +106,13 @@ var simba_execute = function (){
       var processid = "";
       var match_result = stdout.match(/"Simba.exe","(.*?)","Console"/g);
       if (match_result == null) {
-        fs.stat(simba_launcher_path + 'Simba', (err, stats) => {
-          if (err){
+        fs.stat(simba_launcher_path + 'Simba', (directory_err, stats) => {
+          if (directory_err){
             info_log("Simba directory not found!");
           } else{
-              exec('cd ' + simba_launcher_path + 'Simba && Simba.exe', function(err, data) {
-                if(err){
-                    error_log(err);
+              exec('cd ' + simba_launcher_path + 'Simba && Simba.exe', function(execute_err, data) {
+                if(execute_err){
+                    error_log(execute_err);
                     info_log('code:'+'cd ' + simba_launcher_path + 'Simba && Simba.exe')
                     info_log('Simba.exe Execute Error: ' + data);
                 } else {
