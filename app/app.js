@@ -117,13 +117,16 @@ var simba_execute = function (){
 }
 
 var simba_exe_run = function(command){
-  exec(command, function(execute_err, data) {
-    if(execute_err){
-        error_log(execute_err);
-    } else {
-        info_log("Simba.exe execute. Comman" + command);
-    }
-  });
+  setTimeout(function(){
+    exec(command, (execute_err, stdout, stderr) => {
+      if(execute_err){
+          error_log(execute_err);
+          error_log(stderr);
+      } else {
+          info_log("Simba.exe execute. Command: " + command);
+      }
+    });
+  },5000);
 }
 
 var simba_kill = function (){
