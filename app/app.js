@@ -17,9 +17,6 @@ const child_process = require('child_process');
 const exec = child_process.exec;
 const execFile = child_process.execFile;
 const spawn = child_process.spawn;
-const EventEmitter = require('events');
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter();
 var simba_executer = 1;
 
 var app = remote.app;
@@ -37,10 +34,7 @@ var set_version = function (version){
     } else {
       info_log("new version : " + version);
       simba_executer = 1;
-      setTimeout(
-        function(){
-          simba_execute();
-        }, 5000);
+      simba_execute();
     }
   });
 }
@@ -110,16 +104,8 @@ var simba_execute = function (){
           if (directory_err){
             info_log("Simba directory not found!");
           } else{
-              exec('cd ' + simba_launcher_path + 'Simba && Simba.exe', function(execute_err, data) {
-                if(execute_err){
-                    error_log(execute_err);
-                    info_log('code:'+'cd ' + simba_launcher_path + 'Simba && Simba.exe')
-                    info_log('Simba.exe Execute Error: ' + data);
-                } else {
-                    info_log("Simba.exe execute.");
-                }
-              });
-            }
+            simba_exe_run('cd ' + simba_launcher_path + 'Simba && Simba.exe');
+          }
         });
       }
       else {
@@ -128,6 +114,16 @@ var simba_execute = function (){
     }
   });
   info_log("Simba.exe execute finish function");
+}
+
+var simba_exe_run = function(command){
+  exec(command, function(execute_err, data) {
+    if(execute_err){
+        error_log(execute_err);
+    } else {
+        info_log("Simba.exe execute. Comman" + command);
+    }
+  });
 }
 
 var simba_kill = function (){
@@ -166,10 +162,6 @@ var run = function (){
     }
   });
 }
-
-myEmitter.on('error', (err) => {
-  error_log(err);
-});
 
 run();
 
