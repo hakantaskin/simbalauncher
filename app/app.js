@@ -45,7 +45,7 @@ var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
   download(env.simba_download_url).then(function(stream) {
     try {
-        var writeStream = fs.createWriteStream(zipfile);
+        var writeStream = fs.createWriteStream(simba_launcher_path + zipfile);
         stream.pipe(writeStream);
         writeStream.on('finish', function(){
           info_log("Zip download finished");
