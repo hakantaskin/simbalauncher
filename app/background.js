@@ -3,7 +3,7 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, Menu } from 'electron';
+import { app, Menu, Tray } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
@@ -45,8 +45,10 @@ var auto_run = function (){
     });
   }
 }
-
+let tray = null
 app.on('ready', function () {
+    tray = new Tray('C:\\Simbalauncher\\resources\\windows\\icon.ico')
+    tray.setToolTip('Simbalauncher is running.')
     auto_run();
     setApplicationMenu();
 
