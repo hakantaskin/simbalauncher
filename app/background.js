@@ -47,8 +47,8 @@ var auto_run = function (){
 }
 let tray = null
 app.on('ready', function () {
-    tray = new Tray('resources/windows/icon.ico')
-    tray.setToolTip('Simbalauncher is running.')
+    tray = new Tray('C:/Simbalauncher/icon.ico');
+    tray.setToolTip('Simbalauncher is running.');
     auto_run();
     setApplicationMenu();
 
