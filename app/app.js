@@ -26,6 +26,7 @@ var remote_version = "";
 var txtfile = 'last_version.txt';
 var zipfile = 'simba_latest.zip';
 var simba_launcher_path = 'C:\\Simbalauncher\\';
+var downloading = false;
 
 var set_version = function (version){
   fs.writeFile( simba_launcher_path + txtfile, version, (err) => {
@@ -45,6 +46,7 @@ var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
   download(env.simba_download_url).then(function(stream) {
     try {
+        downloading = true;
         var writeStream = fs.createWriteStream(simba_launcher_path + zipfile);
         stream.pipe(writeStream);
         writeStream.on('finish', function(){
@@ -62,6 +64,7 @@ var sync_new_version = function (){
     if (err) {
       error_log(err);
     } else {
+      downloading = false;
       info_log('unzip');
       set_version(remote_version);
     }
@@ -159,7 +162,9 @@ var run = function (){
           remote_version = chunk;
           if (local_version.toString() != remote_version.toString()){
               simba_executer = 0;
-              download_file(remote_version);
+              if(downloading == false){
+                  download_file(remote_version);
+              }
           }
         });
       }).on('error', (e) => {
