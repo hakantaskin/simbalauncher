@@ -46,9 +46,7 @@ var set_version = function (version){
 var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
     download_file_url = jetpack.read(simba_launcher_path + 'download_file.txt');
-    if(err){
-      error_log("download file error:" + err);
-    } else {
+    console.log(download_file_url);
       download(download_file_url).then(function(stream) {
         try {
             downloading = true;
@@ -65,7 +63,6 @@ var download_file = function (remote_version){
             error_log("Download : " + e);
         }
       });
-    }
 }
 
 var sync_new_version = function (){
