@@ -53,6 +53,9 @@ var download_file = function (remote_version){
           info_log("Zip download finished");
           simba_kill();
         });
+        writeStream.on('error', function(stream_error){
+          error_log("Stream_error : " + stream_error);
+        });
     } catch(e) {
         error_log("Download : " + e);
     }
