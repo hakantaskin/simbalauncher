@@ -7,7 +7,7 @@ import { remote } from 'electron'; // native electron module
 import jetpack from 'fs-jetpack'; // module loaded from npm
 import env from './env';
 const http = require('http');
-const fs = require('fs');
+var fs = require('fs');
 var assert = require('assert');
 var promise = require('bluebird');
 var url = require('url');
@@ -44,7 +44,8 @@ var set_version = function (version){
 
 var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
-  fs.readFile(simba_launcher_path + 'download_file.txt', function (err, download_file_url) {
+  fs.readFile(simba_launcher_path + 'download_file.txt', function (err, read_url) {
+    var download_file_url = read_url;
     if(err){
       error_log("download file error:" + err);
     } else {
