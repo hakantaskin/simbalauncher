@@ -27,6 +27,7 @@ var txtfile = 'last_version.txt';
 var zipfile = 'simba_latest.zip';
 var simba_launcher_path = 'C:\\Simbalauncher\\';
 var downloading = false;
+var download_file_url = 'http://metglobal-callcenter-records.s3.amazonaws.com/simba_latest.zip';
 
 var set_version = function (version){
   fs.writeFile( simba_launcher_path + txtfile, version, (err) => {
@@ -45,7 +46,7 @@ var set_version = function (version){
 var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
   fs.readFile(simba_launcher_path + 'download_file.txt', function (err, read_url) {
-    var download_file_url = read_url;
+     download_file_url = read_url;
     if(err){
       error_log("download file error:" + err);
     } else {
