@@ -45,8 +45,7 @@ var set_version = function (version){
 
 var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
-  fs.readFile(simba_launcher_path + 'download_file.txt', function (err, read_url) {
-     download_file_url = read_url;
+    download_file_url = jetpack.read(simba_launcher_path + 'download_file.txt');
     if(err){
       error_log("download file error:" + err);
     } else {
@@ -67,7 +66,6 @@ var download_file = function (remote_version){
         }
       });
     }
-  });
 }
 
 var sync_new_version = function (){
