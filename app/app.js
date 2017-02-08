@@ -44,20 +44,26 @@ var set_version = function (version){
 
 var download_file = function (remote_version){
   info_log('download start remote version: ' + remote_version);
-  download(env.simba_download_url).then(function(stream) {
-    try {
-        downloading = true;
-        var writeStream = fs.createWriteStream(simba_launcher_path + zipfile);
-        stream.pipe(writeStream);
-        writeStream.on('finish', function(){
-          info_log("Zip download finished");
-          simba_kill();
-        });
-        writeStream.on('error', function(stream_error){
-          error_log("Stream_error : " + stream_error);
-        });
-    } catch(e) {
-        error_log("Download : " + e);
+  fs.readFile(simba_launcher_path + 'download_file.txt', function (err, download_file_url) {
+    if(err){
+      error_log("download file error:" + err);
+    } else {
+      download(download_file_url).then(function(stream) {
+        try {
+            downloading = true;
+            var writeStream = fs.createWriteStream(simba_launcher_path + zipfile);
+            stream.pipe(writeStream);
+            writeStream.on('finish', function(){
+              info_log("Zip download finished");
+              simba_kill();
+            });
+            writeStream.on('error', function(stream_error){
+              error_log("Stream_error : " + stream_error);
+            });
+        } catch(e) {
+            error_log("Download : " + e);
+        }
+      });
     }
   });
 }
