@@ -38,6 +38,7 @@ var set_version = function (version){
       setTimeout(function(){
         info_log("Simba executer activate");
         simba_executer = 1;
+        simba_execute();
       }, 40000);
     }
   });
